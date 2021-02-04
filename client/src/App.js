@@ -1,14 +1,26 @@
 import React from "react";
-import styled from "styled-components";
 import HomePage from "./pages/HomePage";
-const Container = styled.main``;
+import Error from "./components/Error";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Provider as ThreadProvider } from "./context/ThreadContext";
 
 const App = () => {
   return (
-    <Container>
-      <HomePage />
-    </Container>
+    <BrowserRouter>
+      <main>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route component={Error} />
+        </Switch>
+      </main>
+    </BrowserRouter>
   );
 };
 
-export default App;
+export default () => {
+  return (
+    <ThreadProvider>
+      <App />
+    </ThreadProvider>
+  );
+};

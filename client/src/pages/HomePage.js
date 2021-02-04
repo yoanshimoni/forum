@@ -1,47 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import ThreadList from "../components/ThreadList";
-
-const threads = [
-  {
-    id: 1,
-    publisher: "kuku",
-    content: "My First Thread",
-    createdDate: "20/03/2019 15:55",
-    comments: [
-      {
-        id: 1,
-        publisher: "kuku1",
-        content: "My First Comment",
-        createdDate: "20/03/2019 15:56",
-      },
-      {
-        id: 2,
-        publisher: "kuku2",
-        content: "My Second Comment",
-        createdDate: "20/03/2019 15:57",
-      },
-    ],
-  },
-  {
-    id: 2,
-    publisher: "kuku1",
-    content: "My Second Thread",
-    createdDate: "20/03/2019 15:55",
-    comments: [],
-  },
-];
+import { Context as ThreadContext } from "../context/ThreadContext";
 
 const Container = styled.div`
   diplay: flex;
   flex-direction: column;
-  padding: 20px;
+  width: 100%;
+  padding: 50px;
 `;
 
 const HomePage = () => {
+  const { getThreads } = useContext(ThreadContext);
+
+  useEffect(() => {
+    getThreads();
+  }, []);
+
   return (
     <Container>
-      <ThreadList threads={threads} />
+      <ThreadList />
     </Container>
   );
 };
