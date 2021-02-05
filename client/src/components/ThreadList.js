@@ -13,7 +13,7 @@ const Container = styled.div`
 const PostsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 25px 0px 25px 50px;
+  margin: 25px 0px 25px 200px;
 `;
 
 const ThreadList = () => {
@@ -27,7 +27,7 @@ const ThreadList = () => {
         threadList.map((thread) =>
           !thread.comments.length ? ( // check if there isn't comments to this thread
             <ThreadCard
-              key={thread.id}
+              key={thread._id}
               publisher={thread.publisher}
               content={thread.content}
               createdDate={thread.createdDate}
@@ -35,6 +35,7 @@ const ThreadList = () => {
           ) : (
             <>
               <ThreadCard
+                key={thread._id}
                 publisher={thread.publisher}
                 content={thread.content}
                 createdDate={thread.createdDate}
@@ -42,7 +43,7 @@ const ThreadList = () => {
               <PostsWrapper>
                 {thread.comments.map((comment) => (
                   <PostCard
-                    key={comment.id}
+                    key={comment._id}
                     publisher={comment.publisher}
                     content={comment.content}
                     createdDate={comment.createdDate}

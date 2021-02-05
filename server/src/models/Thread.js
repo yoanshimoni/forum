@@ -16,6 +16,10 @@ const commentSchema = new mongoose.Schema({
 });
 
 const threadSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   publisher: {
     type: String,
     default: "Anonymous",

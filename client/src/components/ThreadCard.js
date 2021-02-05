@@ -14,11 +14,13 @@ const RemoveButton = styled.div`
 const Content = styled.p`
   margin-left: 3px;
 `;
-const Date = styled.p`
+const StyledDate = styled.p`
   align-self: flex-end;
 `;
 
 const ThreadCard = ({ publisher, content, createdDate }) => {
+  const date = new Date(createdDate);
+
   return (
     <StyledCard>
       <RemoveButton onClick={() => {}}>
@@ -26,8 +28,9 @@ const ThreadCard = ({ publisher, content, createdDate }) => {
       </RemoveButton>
       <p>{`from: ${publisher}`}</p>
       <Content>{content}</Content>
-      <Date>{createdDate}</Date>
+      <StyledDate>{date.toUTCString()}</StyledDate>
     </StyledCard>
   );
 };
+
 export default ThreadCard;

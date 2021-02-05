@@ -1,10 +1,9 @@
 import createDateContext from "./createDataContext";
-import usersApi from "../api/usersApi";
-import threadsData from "../threadsData";
+import threadsApi from "../api/threadsApi";
 
 const threadReducer = (state, action) => {
   switch (action.type) {
-    case "get_threads": {
+    case "fetch_threads": {
       return { threadList: [...action.payload] };
     }
     default:
@@ -12,11 +11,11 @@ const threadReducer = (state, action) => {
   }
 };
 
-const getThreads = (dispatch) => async () => {
+const fetchThreads = (dispatch) => async () => {
   try {
-    console.log(threadsData);
-    // const response = await usersApi.get(`/threads`);
-    dispatch({ type: "get_threads", payload: threadsData });
+    const response = await threadsApi.get(`/threads`);
+    console.log(response);
+    dispatch({ type: "fetch_threads", payload: response.data });
   } catch (err) {
     console.log(err);
   }
@@ -24,6 +23,6 @@ const getThreads = (dispatch) => async () => {
 
 export const { Context, Provider } = createDateContext(
   threadReducer,
-  { getThreads },
+  { fetchThreads },
   { threadList: [] }
 );

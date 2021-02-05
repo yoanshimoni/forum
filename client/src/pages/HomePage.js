@@ -11,10 +11,11 @@ const Container = styled.div`
 `;
 
 const HomePage = () => {
-  const { getThreads } = useContext(ThreadContext);
+  const { fetchThreads } = useContext(ThreadContext);
 
   useEffect(() => {
-    getThreads();
+    console.log(fetchThreads);
+    fetchThreads();
   }, []);
 
   return (

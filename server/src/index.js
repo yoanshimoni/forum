@@ -1,12 +1,17 @@
 require("./models/Thread");
+require("./models/User");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const threadRoutes = require("./routes/threadRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
+app.use(authRoutes);
 app.use(threadRoutes);
 
 const mongoUri =
@@ -22,10 +27,6 @@ mongoose.connection.on("connected", () => {
 // Error on connection
 mongoose.connection.on("error", (err) => {
   console.log(err);
-});
-
-app.get("/", (req, res) => {
-  res.send(`hello world`);
 });
 
 const PORT = process.env.PORT || 5000;

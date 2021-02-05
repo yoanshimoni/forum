@@ -1,8 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Thread = mongoose.model("Thread"); // import the db of Thread
+const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
+// router.use(requireAuth);
+
+router.get("/threads", async (req, res) => {
+  try {
+    const threads = await Thread.find({});
+    console.log(threads);
+    res.send(threads);
+  } catch (err) {
+    console.log(err);
+    return res.status(422).send({ error: "couldn't return threads" });
+  }
+});
 
 router.post("/threads", async (req, res) => {
   const { publisher, content, comments } = req.body;
@@ -13,6 +26,7 @@ router.post("/threads", async (req, res) => {
 
     res.send("A new thread posted");
   } catch (err) {
+    console.log(err);
     return res.status(422).send({ error: "invalid thread post" });
   }
 });
