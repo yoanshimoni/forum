@@ -1,3 +1,4 @@
+require("./models/Thread");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -9,7 +10,7 @@ app.use(bodyParser.json());
 app.use(threadRoutes);
 
 const mongoUri =
-  "mongodb+srv://admin:shimonit15@cluster0.irt91.mongodb.net/<forum>?retryWrites=true&w=majority";
+  "mongodb+srv://admin:shimonit15@cluster0.irt91.mongodb.net/forum?ryWrites=true&w=majority";
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useCreateIndex: true,

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const commentSchema = new mongoose.Schema({
   publisher: {
     type: String,
-    required: true,
+    default: "Anonymous",
   },
   content: {
     type: String,
@@ -15,10 +15,10 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
-const ThreadSchema = new mongoose.Schema({
+const threadSchema = new mongoose.Schema({
   publisher: {
     type: String,
-    required: true,
+    default: "Anonymous",
   },
   content: {
     type: String,
@@ -30,7 +30,8 @@ const ThreadSchema = new mongoose.Schema({
   },
   comments: {
     type: [commentSchema],
+    default: [],
   },
 });
 
-mongoose.model("Thread", trackSchema);
+mongoose.model("Thread", threadSchema); // Creates the threadb
