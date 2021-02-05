@@ -20,7 +20,7 @@ const ThreadList = () => {
   const {
     state: { threadList },
   } = useContext(ThreadContext);
-
+  console.log(threadList);
   return (
     <Container>
       {threadList.length ? (
