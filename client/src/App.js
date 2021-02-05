@@ -1,22 +1,40 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
-import Error from "./components/Error";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Redirect } from "react-router-dom";
 import { Provider as ThreadProvider } from "./context/ThreadContext";
-import { Provider as AuthProvider } from "./context/AuthContext";
+import {
+  Provider as AuthProvider,
+  Context as AuthContext,
+} from "./context/AuthContext";
 
 const App = () => {
+  const { state, localSign } = useContext(AuthContext);
+  useEffect(() => {
+    localSign();
+  }, []);
+
+  if (state.isLoading) {
+    return <h2>Loading local sign...</h2>;
+  }
+
   return (
     <BrowserRouter>
       <main>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/signup" component={SignupPage} />
-          <Route exact path="/signin" component={SigninPage} />
-          <Route component={Error} />
-        </Switch>
+        <Route
+          exact
+          path="/"
+          render={() =>
+            state.token !== null ? (
+              <HomePage />
+            ) : (
+              <Redirect from="/" to="/signin" />
+            )
+          }
+        />
+        <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/signin" component={SigninPage} />
       </main>
     </BrowserRouter>
   );

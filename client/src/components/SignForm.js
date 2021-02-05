@@ -9,7 +9,7 @@ const Input = styled.input`
   border-radius: 4px;
 `;
 
-const SignForm = ({ onSubmit }) => {
+const SignForm = ({ onSubmit, errorMessage }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,6 +35,7 @@ const SignForm = ({ onSubmit }) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <input type="submit" value="Submit" />
+      {errorMessage ? <p>{errorMessage}</p> : null}
     </form>
   );
 };

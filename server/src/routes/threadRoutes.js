@@ -4,7 +4,7 @@ const Thread = mongoose.model("Thread"); // import the db of Thread
 const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
-// router.use(requireAuth);
+router.use(requireAuth);
 
 router.get("/threads", async (req, res) => {
   try {
@@ -18,12 +18,11 @@ router.get("/threads", async (req, res) => {
 });
 
 router.post("/threads", async (req, res) => {
-  const { publisher, content, comments } = req.body;
+  const { content } = req.body;
 
   try {
-    const thread = new Thread({ publisher, content, comments });
+    const thread = new Thread({ content, publisher: req.user.name });
     await thread.save();
-
     res.send("A new thread posted");
   } catch (err) {
     console.log(err);
@@ -32,14 +31,14 @@ router.post("/threads", async (req, res) => {
 });
 
 router.post("/comments", async (req, res) => {
-  const { threadId, publisher, content } = req.body;
+  const { content, threadId } = req.body;
 
   try {
-    const thread = await Thread.findOne({ publisher: "test1" });
-    console.log(thread);
+    const thread = await Thread.findOne({ publisher: "123" });
+
     await Thread.findOneAndUpdate(
       { _id: thread._id },
-      { $push: { comments: { publisher, content } } }
+      { $push: { comments: { content, publisher: req.user.name } } }
     );
     res.send("A new comment posted");
   } catch (err) {

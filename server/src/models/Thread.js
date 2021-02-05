@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const commentSchema = new mongoose.Schema({
   publisher: {
     type: String,
-    default: "Anonymous",
+    required: true,
   },
   content: {
     type: String,
@@ -16,13 +16,9 @@ const commentSchema = new mongoose.Schema({
 });
 
 const threadSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
   publisher: {
     type: String,
-    default: "Anonymous",
+    required: true,
   },
   content: {
     type: String,
