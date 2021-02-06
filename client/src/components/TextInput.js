@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { Context as ThreadContext } from "../context/ThreadContext";
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +20,14 @@ const Button = styled.button`
   }
 `;
 
-const TextInput = ({ holderText = "", value, onChange, size }) => {
+const TextInput = ({
+  holderText = "",
+  value,
+  onChange,
+  userName,
+  onClick,
+  size,
+}) => {
   return (
     <Container size={size}>
       <ThreadInput
@@ -28,7 +36,7 @@ const TextInput = ({ holderText = "", value, onChange, size }) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      <Button onClick={() => console.log(value)}>Submit</Button>
+      <Button onClick={onClick}>Submit</Button>
     </Container>
   );
 };

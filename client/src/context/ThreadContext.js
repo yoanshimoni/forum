@@ -6,6 +6,34 @@ const threadReducer = (state, action) => {
     case "fetch_threads": {
       return { threadList: [...action.payload] };
     }
+    case "create_thread": {
+      return { threadList: [...state.threadList, action.payload] };
+    }
+    case "delete_thread": {
+      return {
+        threadList: state.threadList.filter(
+          (thread) => thread._id !== action.payload
+        ),
+      };
+    }
+    case "create_comment": {
+      return {
+        threadList: state.threadList.map((thread) => {
+          return thread._id === action.payload.threadId
+            ? action.payload.newThread
+            : thread;
+        }),
+      };
+    }
+    case "delete_comment": {
+      return {
+        threadList: state.threadList.map((thread) => {
+          return thread._id === action.payload.threadId
+            ? action.payload.newThread
+            : thread;
+        }),
+      };
+    }
     default:
       return state;
   }
@@ -14,8 +42,49 @@ const threadReducer = (state, action) => {
 const fetchThreads = (dispatch) => async () => {
   try {
     const response = await threadsApi.get(`/threads`);
-    console.log(response);
     dispatch({ type: "fetch_threads", payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createThread = (dispatch) => async (content) => {
+  try {
+    const response = await threadsApi.post(`/threads`, { content });
+    dispatch({ type: "create_thread", payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteThread = (dispatch) => async (threadId) => {
+  try {
+    await threadsApi.post(`/threads`, { threadId });
+    dispatch({ type: "delete_thread", payload: threadId });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createComment = (dispatch) => async (content, threadId) => {
+  try {
+    const response = await threadsApi.post(`/comments`, { content, threadId });
+    dispatch({
+      type: "create_comment",
+      payload: { newThread: response.data, threadId },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteComment = (dispatch) => async (threadId, commentId) => {
+  try {
+    const response = await threadsApi.post(`/threads`, { threadId, commentId });
+    dispatch({
+      type: "delete_thread",
+      payload: { threadId, newThread: response.data },
+    });
   } catch (err) {
     console.log(err);
   }
@@ -23,6 +92,6 @@ const fetchThreads = (dispatch) => async () => {
 
 export const { Context, Provider } = createDateContext(
   threadReducer,
-  { fetchThreads },
+  { fetchThreads, createThread, deleteThread, createComment, deleteComment },
   { threadList: [] }
 );

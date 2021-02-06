@@ -27,13 +27,16 @@ router.post("/signin", async (req, res) => {
   }
 
   const user = await User.findOne({ name: name });
-  console.log(user);
+
   if (!user) {
     return res.status(422).send({ error: "Invalid password or name1" });
   }
   try {
     await user.comparePassword(password);
-    const token = jwt.sign({ userId: user._id }, "MY_SECRET_KEY");
+    const token = jwt.sign(
+      { userId: user._id, userName: name },
+      "MY_SECRET_KEY"
+    );
     res.send({ token });
   } catch (err) {
     return res.status(422).send({ error: "Invalid password or name2" });

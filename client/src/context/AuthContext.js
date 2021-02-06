@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import threadsApi from "../api/threadsApi";
+import jwt_decode from "jwt-decode";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -7,7 +8,12 @@ const authReducer = (state, action) => {
       return { ...state, token: action.payload, errorMessage: "" };
     }
     case "local_sign": {
-      return { ...state, token: action.payload, isLoading: false };
+      return {
+        ...state,
+        token: action.payload.token,
+        isLoading: false,
+        userName: action.payload.userName,
+      };
     }
     case "add_error": {
       return { ...state, errorMessage: action.payload };
@@ -23,7 +29,12 @@ const authReducer = (state, action) => {
 const localSign = (dispatch) => async () => {
   try {
     const token = await window.localStorage.getItem("token");
-    dispatch({ type: "local_sign", payload: token });
+    let userName = "";
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      userName = decodedToken.userName;
+    }
+    dispatch({ type: "local_sign", payload: { token, userName } });
   } catch (error) {
     console.log(error);
     dispatch({ type: "local_sign", payload: null });
@@ -58,5 +69,5 @@ const clearErrorMessage = (dispatch) => () => {
 export const { Context, Provider } = createDataContext(
   authReducer,
   { signup, signin, localSign, clearErrorMessage },
-  { token: null, errorMessage: "", isLoading: true }
+  { token: null, errorMessage: "", isLoading: true, userName: "" }
 );

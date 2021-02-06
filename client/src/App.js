@@ -23,18 +23,17 @@ const App = () => {
     <BrowserRouter>
       <main>
         <Route
-          exact
           path="/"
           render={() =>
-            state.token !== null ? (
-              <HomePage />
-            ) : (
-              <Redirect from="/" to="/signin" />
-            )
+            state.token !== null ? <HomePage /> : <Redirect to="/signin" />
           }
         />
-        <Route exact path="/signup" component={SignupPage} />
-        <Route exact path="/signin" component={SigninPage} />
+        {state.token === null && (
+          <>
+            <Route exact path="/signup" component={SignupPage} />
+            <Route exact path="/signin" component={SigninPage} />
+          </>
+        )}
       </main>
     </BrowserRouter>
   );
