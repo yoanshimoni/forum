@@ -31,6 +31,7 @@ router.post("/threads", async (req, res) => {
 
 router.delete("/threads", async (req, res) => {
   const { threadId } = req.body;
+
   try {
     const threadDelete = await Thread.deleteOne({ _id: threadId });
     if (threadDelete.deletedCount) {
@@ -53,6 +54,7 @@ router.post("/comments", async (req, res) => {
       { $push: { comments: { content, publisher: req.user.name } } },
       { new: true }
     );
+    console.log(thread);
     res.send(thread);
   } catch (err) {
     console.log(err);

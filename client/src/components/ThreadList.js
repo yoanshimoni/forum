@@ -43,45 +43,30 @@ const ThreadList = () => {
     <Container>
       <Wrapper>
         {threadList.length ? (
-          threadList.map((thread) =>
-            !thread.comments.length ? ( // check if there isn't comments to this thread
-              <>
-                <ThreadCard
-                  key={thread._id}
-                  publisher={thread.publisher}
-                  content={thread.content}
-                  createdDate={thread.createdDate}
-                  onClickDelete={() => {
-                    deleteThread(thread._id);
-                  }}
-                />
-                <TextInput
-                  key={thread._id}
-                  holderText="Text to comment thread..."
-                  value={comment}
-                  onChange={setComment}
-                  onClick={() => {
-                    createComment(comment, thread._id);
-                    setComment("");
-                  }}
-                  size="small"
-                />
-              </>
-            ) : (
-              <>
-                <ThreadCard
-                  key={thread._id}
-                  publisher={thread.publisher}
-                  content={thread.content}
-                  createdDate={thread.createdDate}
-                  onClickDelete={() => {
-                    deleteThread(thread._id);
-                  }}
-                />
-                <PostsWrapper>
-                  {thread.comments.map((comment) => (
+          threadList.map((thread, b) => (
+            <Container key={thread._id}>
+              <ThreadCard
+                publisher={thread.publisher}
+                content={thread.content}
+                createdDate={thread.createdDate}
+                onClickDelete={() => {
+                  deleteThread(thread._id);
+                }}
+              />
+              <TextInput
+                holderText="Text to comment thread..."
+                value={comment}
+                onChange={setComment}
+                onClick={() => {
+                  createComment(comment, thread._id);
+                  setComment("");
+                }}
+                size="small"
+              />
+              {thread.comments.length &&
+                thread.comments.map((comment, i) => (
+                  <PostsWrapper key={comment._id}>
                     <PostCard
-                      key={comment._id}
                       publisher={comment.publisher}
                       content={comment.content}
                       createdDate={comment.createdDate}
@@ -89,22 +74,10 @@ const ThreadList = () => {
                         deleteComment(thread._id, comment._id);
                       }}
                     />
-                  ))}
-                  <TextInput
-                    key={thread._id}
-                    holderText="Text to comment thread..."
-                    value={comment}
-                    onChange={setComment}
-                    onClick={() => {
-                      createComment(comment, thread._id);
-                      setComment("");
-                    }}
-                    size="small"
-                  />
-                </PostsWrapper>
-              </>
-            )
-          )
+                  </PostsWrapper>
+                ))}
+            </Container>
+          ))
         ) : (
           <h2>Loading Threads...</h2>
         )}

@@ -20,14 +20,7 @@ const Button = styled.button`
   }
 `;
 
-const TextInput = ({
-  holderText = "",
-  value,
-  onChange,
-  userName,
-  onClick,
-  size,
-}) => {
+const TextInput = ({ holderText = "", value, onChange, onClick, size }) => {
   return (
     <Container size={size}>
       <ThreadInput
