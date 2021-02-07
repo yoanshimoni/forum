@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import ThreadCard from "./ThreadCard";
-import TextInput from "./TextInput";
+import PostInput from "./PostInput";
+import ThreadInput from "./ThreadInput";
 import { Context as ThreadContext } from "../context/ThreadContext";
 import { Context as AuthContext } from "../context/AuthContext";
 
@@ -24,13 +25,8 @@ const PostsWrapper = styled.div`
 `;
 
 const ThreadList = () => {
-  const [thread, setThread] = useState("");
-  const [comment, setComment] = useState("");
-
   const {
-    createThread,
     deleteThread,
-    createComment,
     deleteComment,
     state: { threadList },
   } = useContext(ThreadContext);
@@ -53,16 +49,7 @@ const ThreadList = () => {
                   deleteThread(thread._id);
                 }}
               />
-              <TextInput
-                holderText="Text to comment thread..."
-                value={comment}
-                onChange={setComment}
-                onClick={() => {
-                  createComment(comment, thread._id);
-                  setComment("");
-                }}
-                size="small"
-              />
+              <PostInput threadId={thread._id} />
               {thread.comments.length &&
                 thread.comments.map((comment, i) => (
                   <PostsWrapper key={comment._id}>
@@ -82,15 +69,7 @@ const ThreadList = () => {
           <h2>Loading Threads...</h2>
         )}
       </Wrapper>
-      <TextInput
-        holderText="Text for new thread here..."
-        value={thread}
-        onChange={setThread}
-        onClick={() => {
-          createThread(thread);
-          setThread("");
-        }}
-      />
+      <ThreadInput />
     </Container>
   );
 };
