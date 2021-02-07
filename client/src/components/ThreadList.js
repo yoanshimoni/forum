@@ -39,7 +39,7 @@ const ThreadList = () => {
     <Container>
       <Wrapper>
         {threadList.length ? (
-          threadList.map((thread, b) => (
+          threadList.map((thread) => (
             <Container key={thread._id}>
               <ThreadCard
                 publisher={thread.publisher}
@@ -50,8 +50,8 @@ const ThreadList = () => {
                 }}
               />
               <PostInput threadId={thread._id} />
-              {thread.comments.length &&
-                thread.comments.map((comment, i) => (
+              {thread.comments.length > 0 &&
+                thread.comments.map((comment) => (
                   <PostsWrapper key={comment._id}>
                     <PostCard
                       publisher={comment.publisher}

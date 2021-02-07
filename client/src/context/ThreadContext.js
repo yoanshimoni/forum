@@ -18,20 +18,24 @@ const threadReducer = (state, action) => {
     }
     case "create_comment": {
       return {
-        threadList: state.threadList.map((thread) => {
-          return thread._id === action.payload.threadId
-            ? action.payload.newThread
-            : thread;
-        }),
+        threadList: [
+          ...state.threadList.map((thread) => {
+            return thread._id === action.payload.threadId
+              ? action.payload.newThread
+              : thread;
+          }),
+        ],
       };
     }
     case "delete_comment": {
       return {
-        threadList: state.threadList.map((thread) => {
-          return thread._id === action.payload.threadId
-            ? action.payload.newThread
-            : thread;
-        }),
+        threadList: [
+          ...state.threadList.map((thread) => {
+            return thread._id === action.payload.threadId
+              ? action.payload.newThread
+              : thread;
+          }),
+        ],
       };
     }
     default:
@@ -60,7 +64,7 @@ const createThread = (dispatch) => async (content) => {
 const deleteThread = (dispatch) => async (threadId) => {
   console.log(threadId);
   try {
-    // await threadsApi.delete(`/threads`, { data: { threadId } });
+    await threadsApi.delete(`/threads`, { data: { threadId } });
     dispatch({ type: "delete_thread", payload: threadId });
   } catch (err) {
     console.log(err);
@@ -82,12 +86,14 @@ const createComment = (dispatch) => async (content, threadId) => {
 const deleteComment = (dispatch) => async (threadId, commentId) => {
   try {
     const response = await threadsApi.delete(`/comments`, {
-      threadId,
-      commentId,
+      data: {
+        threadId,
+        commentId,
+      },
     });
     console.log(response.data);
     dispatch({
-      type: "delete_thread",
+      type: "delete_comment",
       payload: { newThread: response.data, threadId },
     });
   } catch (err) {
