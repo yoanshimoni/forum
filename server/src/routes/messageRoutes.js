@@ -27,7 +27,6 @@ router.post("/messages", async (req, res) => {
   const { content, recipient } = req.body;
   try {
     const user = await User.findOne({ name: recipient });
-    console.log(user);
     if (user) {
       const recipientId = user._id;
       const message = new Message({
@@ -37,7 +36,7 @@ router.post("/messages", async (req, res) => {
         recipientId,
       });
       await message.save();
-      res.send(message);
+      res.send("Message Posted Successfuly");
     } else {
       return res.status(422).send({ error: "invalid recipient" });
     }

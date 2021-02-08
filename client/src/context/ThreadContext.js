@@ -13,7 +13,9 @@ const threadReducer = (state, action) => {
     case "create_thread": {
       return {
         ...state,
-        threadList: [...state.threadList, action.payload].sort(),
+        threadList: [...state.threadList, action.payload].sort(
+          (a, b) => new Date(b.createdDate) - new Date(a.createdDate)
+        ),
       };
     }
     case "delete_thread": {
@@ -83,7 +85,6 @@ const createThread = (dispatch) => async (content) => {
 };
 
 const deleteThread = (dispatch) => async (threadId) => {
-  console.log(threadId);
   try {
     await threadsApi.delete(`/threads`, { data: { threadId } });
     dispatch({ type: "delete_thread", payload: threadId });
@@ -112,7 +113,6 @@ const deleteComment = (dispatch) => async (threadId, commentId) => {
         commentId,
       },
     });
-    console.log(response.data);
     dispatch({
       type: "delete_comment",
       payload: { newThread: response.data, threadId },

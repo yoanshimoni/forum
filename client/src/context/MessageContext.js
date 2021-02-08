@@ -45,18 +45,6 @@ const createMessage = (dispatch) => async (content, recipient) => {
   }
 };
 
-// const fetchUserNames = (dispatch) => async (pageNum) => {
-//   try {
-//     const response = await threadsApi.get("/users", { params: { pageNum } });
-//     dispatch({
-//       type: "fetch_user_names",
-//       payload: response.data,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 export const { Context, Provider } = createDateContext(
   messageReducer,
   { fetchMessages, createMessage },

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { GiCancel } from "react-icons/gi";
 
@@ -24,8 +24,6 @@ const StyledDate = styled.p`
 `;
 
 const ThreadCard = ({ publisher, content, createdDate, onClickDelete }) => {
-  const date = new Date(createdDate);
-
   return (
     <StyledCard>
       <RemoveButton onClick={onClickDelete}>
@@ -33,7 +31,7 @@ const ThreadCard = ({ publisher, content, createdDate, onClickDelete }) => {
       </RemoveButton>
       <p>{`from: ${publisher}`}</p>
       <Content>{content}</Content>
-      <StyledDate>{date.toUTCString()}</StyledDate>
+      <StyledDate>{new Date(createdDate).toUTCString()}</StyledDate>
     </StyledCard>
   );
 };

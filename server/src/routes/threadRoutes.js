@@ -10,12 +10,11 @@ router.use(requireAuth);
 
 router.get("/threads", async (req, res) => {
   const page = req.query.pageNum || 1;
-  console.log(req.query.pageNum);
   try {
     const threads = await Thread.find({})
       .skip((page - 1) * PAGE_SIZE)
       .limit(PAGE_SIZE)
-      .sort({ date: -1 });
+      .sort({ createdDate: "desc" });
     res.send(threads);
   } catch (err) {
     console.log(err);
@@ -61,7 +60,6 @@ router.post("/comments", async (req, res) => {
       { $push: { comments: { content, publisher: req.user.name } } },
       { new: true }
     );
-    console.log(thread);
     res.send(thread);
   } catch (err) {
     console.log(err);
