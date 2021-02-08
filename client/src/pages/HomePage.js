@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import ThreadList from "../components/ThreadList";
-import { Context as ThreadContext } from "../context/ThreadContext";
 
 const Container = styled.div`
   diplay: flex;
@@ -9,10 +9,15 @@ const Container = styled.div`
   width: 100%;
   padding: 50px;
 `;
+const StyledLink = styled(Link)`
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
 
 const HomePage = () => {
   return (
     <Container>
+      <StyledLink to="/messages">Go To Messages</StyledLink>
       <ThreadList />
     </Container>
   );

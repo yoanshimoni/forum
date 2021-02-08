@@ -5,7 +5,6 @@ import ThreadCard from "./ThreadCard";
 import PostInput from "./PostInput";
 import ThreadInput from "./ThreadInput";
 import { Context as ThreadContext } from "../context/ThreadContext";
-import { Context as AuthContext } from "../context/AuthContext";
 
 const PostCard = ThreadCard; // Reuse component with appropriate name
 
@@ -31,7 +30,7 @@ const ThreadList = () => {
     deleteThread,
     deleteComment,
     fetchThreads,
-    state: { threadList },
+    state: { threadList, hasMoreThreads },
   } = useContext(ThreadContext);
 
   useEffect(() => {
@@ -39,7 +38,6 @@ const ThreadList = () => {
     setPageNum((prevPageNum) => prevPageNum + 1);
   }, []);
 
-  console.log(pageNum);
   return (
     <Container>
       <ThreadInput />
@@ -47,12 +45,12 @@ const ThreadList = () => {
         <InfiniteScroll
           dataLength={threadList.length}
           next={() => {
-            console.log("fetch");
             fetchThreads(pageNum);
             setPageNum((prevPageNum) => prevPageNum + 1);
           }}
-          hasMore={true}
+          hasMore={hasMoreThreads}
           loader={<h4>Loading...</h4>}
+          endMessage={<h2>End Of Threads List...</h2>}
         >
           {threadList.map((thread) => (
             <Container key={thread._id}>

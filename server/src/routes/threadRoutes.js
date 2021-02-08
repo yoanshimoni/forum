@@ -14,7 +14,8 @@ router.get("/threads", async (req, res) => {
   try {
     const threads = await Thread.find({})
       .skip((page - 1) * PAGE_SIZE)
-      .limit(PAGE_SIZE);
+      .limit(PAGE_SIZE)
+      .sort({ date: -1 });
     res.send(threads);
   } catch (err) {
     console.log(err);

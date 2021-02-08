@@ -4,13 +4,21 @@ import threadsApi from "../api/threadsApi";
 const threadReducer = (state, action) => {
   switch (action.type) {
     case "fetch_threads": {
-      return { threadList: [...state.threadList, ...action.payload] };
+      return {
+        ...state,
+        threadList: [...state.threadList, ...action.payload.threads],
+        hasMoreThreads: action.payload.hasMore,
+      };
     }
     case "create_thread": {
-      return { threadList: [...state.threadList, action.payload] };
+      return {
+        ...state,
+        threadList: [...state.threadList, action.payload].sort(),
+      };
     }
     case "delete_thread": {
       return {
+        ...state,
         threadList: [
           ...state.threadList.filter((thread) => thread._id !== action.payload),
         ],
@@ -18,6 +26,7 @@ const threadReducer = (state, action) => {
     }
     case "create_comment": {
       return {
+        ...state,
         threadList: [
           ...state.threadList.map((thread) => {
             return thread._id === action.payload.threadId
@@ -29,6 +38,7 @@ const threadReducer = (state, action) => {
     }
     case "delete_comment": {
       return {
+        ...state,
         threadList: [
           ...state.threadList.map((thread) => {
             return thread._id === action.payload.threadId
@@ -46,7 +56,18 @@ const threadReducer = (state, action) => {
 const fetchThreads = (dispatch) => async (pageNum) => {
   try {
     const response = await threadsApi.get(`/threads`, { params: { pageNum } });
-    dispatch({ type: "fetch_threads", payload: response.data });
+    if (response.data.length > 0) {
+      dispatch({
+        type: "fetch_threads",
+        payload: { threads: response.data, hasMore: true },
+      });
+    } else {
+      console.log("response.data.length", response.data.length);
+      dispatch({
+        type: "fetch_threads",
+        payload: { threads: [], hasMore: false },
+      });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -104,5 +125,5 @@ const deleteComment = (dispatch) => async (threadId, commentId) => {
 export const { Context, Provider } = createDateContext(
   threadReducer,
   { fetchThreads, createThread, deleteThread, createComment, deleteComment },
-  { threadList: [] }
+  { threadList: [], hasMoreThreads: true }
 );

@@ -1,33 +1,42 @@
 import React, { useState, useContext } from "react";
+import styled from "styled-components";
 import TextInput from "./TextInput";
 import { Context as MessageContext } from "../context/MessageContext";
-// import { SelectFetch } from "react-select-fetch";
+
+const RecipientInput = styled.input`
+  height: 40px;
+  font-size: 20px;
+  margin: 4px;
+`;
 
 const MessageInput = () => {
-  //   const { createMessage } = useContext(ThreadContext);
   const [message, setMessage] = useState("");
+  const [recipient, setRecipient] = useState("");
+  const { createMessage } = useContext(MessageContext);
 
   return (
-    <>
-      {/* <SelectFetch
-        url="/options/"
-        value={value}
-        onChange={onChange}
-        get={get}
-        queryParams={{
-          limit: 10,
-        }}
-      /> */}
-      <TextInput
-        holderText="Text to post message"
-        value={message}
-        onChange={setMessage}
-        onClick={() => {
-          //   createMessage(message);
-          setMessage("");
-        }}
-      />
-    </>
+    <div>
+      <>
+        <label>
+          Send To:
+          <RecipientInput
+            type="text"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+          />
+        </label>
+        <TextInput
+          holderText="Text to post message"
+          value={message}
+          onChange={setMessage}
+          onClick={() => {
+            createMessage(message, recipient);
+            setMessage("");
+            setRecipient("");
+          }}
+        />
+      </>
+    </div>
   );
 };
 
