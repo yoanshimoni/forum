@@ -14,6 +14,7 @@ const StyledCard = styled.div`
   border: 2px solid black;
   width: 40%;
   margin: 10px;
+  word-wrap: break-word;
 `;
 const StyledDate = styled.p`
   align-self: flex-end;
