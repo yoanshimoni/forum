@@ -4,7 +4,7 @@ import threadsApi from "../api/threadsApi";
 const threadReducer = (state, action) => {
   switch (action.type) {
     case "fetch_threads": {
-      return { threadList: [...action.payload] };
+      return { threadList: [...state.threadList, ...action.payload] };
     }
     case "create_thread": {
       return { threadList: [...state.threadList, action.payload] };
@@ -43,9 +43,9 @@ const threadReducer = (state, action) => {
   }
 };
 
-const fetchThreads = (dispatch) => async () => {
+const fetchThreads = (dispatch) => async (pageNum) => {
   try {
-    const response = await threadsApi.get(`/threads`);
+    const response = await threadsApi.get(`/threads`, { params: { pageNum } });
     dispatch({ type: "fetch_threads", payload: response.data });
   } catch (err) {
     console.log(err);

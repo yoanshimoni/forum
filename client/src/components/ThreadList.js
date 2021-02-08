@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import ThreadCard from "./ThreadCard";
 import PostInput from "./PostInput";
@@ -25,21 +26,35 @@ const PostsWrapper = styled.div`
 `;
 
 const ThreadList = () => {
+  const [pageNum, setPageNum] = useState(1);
   const {
     deleteThread,
     deleteComment,
+    fetchThreads,
     state: { threadList },
   } = useContext(ThreadContext);
 
-  const {
-    state: { userName },
-  } = useContext(AuthContext);
+  useEffect(() => {
+    fetchThreads(pageNum);
+    setPageNum((prevPageNum) => prevPageNum + 1);
+  }, []);
 
+  console.log(pageNum);
   return (
     <Container>
+      <ThreadInput />
       <Wrapper>
-        {threadList.length ? (
-          threadList.map((thread) => (
+        <InfiniteScroll
+          dataLength={threadList.length}
+          next={() => {
+            console.log("fetch");
+            fetchThreads(pageNum);
+            setPageNum((prevPageNum) => prevPageNum + 1);
+          }}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          {threadList.map((thread) => (
             <Container key={thread._id}>
               <ThreadCard
                 publisher={thread.publisher}
@@ -64,12 +79,9 @@ const ThreadList = () => {
                   </PostsWrapper>
                 ))}
             </Container>
-          ))
-        ) : (
-          <h2>Loading Threads...</h2>
-        )}
+          ))}
+        </InfiniteScroll>
       </Wrapper>
-      <ThreadInput />
     </Container>
   );
 };

@@ -3,12 +3,18 @@ const mongoose = require("mongoose");
 const Thread = mongoose.model("Thread"); // import the db of Thread
 const requireAuth = require("../middlewares/requireAuth");
 
+const PAGE_SIZE = 5;
+
 const router = express.Router();
 router.use(requireAuth);
 
 router.get("/threads", async (req, res) => {
+  const page = req.query.pageNum || 1;
+  console.log(req.query.pageNum);
   try {
-    const threads = await Thread.find({});
+    const threads = await Thread.find({})
+      .skip((page - 1) * PAGE_SIZE)
+      .limit(PAGE_SIZE);
     res.send(threads);
   } catch (err) {
     console.log(err);

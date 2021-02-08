@@ -11,13 +11,6 @@ const Container = styled.div`
 `;
 
 const HomePage = () => {
-  const { fetchThreads } = useContext(ThreadContext);
-
-  useEffect(() => {
-    console.log(fetchThreads);
-    fetchThreads();
-  }, []);
-
   return (
     <Container>
       <ThreadList />

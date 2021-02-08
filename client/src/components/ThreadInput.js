@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import styled from "styled-components";
 import TextInput from "./TextInput";
 import { Context as ThreadContext } from "../context/ThreadContext";
 
